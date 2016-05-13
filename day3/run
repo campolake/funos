@@ -1,0 +1,3 @@
+sudo make img
+sudo make copy
+sudo make run
