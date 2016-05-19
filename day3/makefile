@@ -13,16 +13,14 @@ kernelImg:entry.o  main.o screen.o
 	objdump -S $@.out >$@.asm
 	objcopy -S -O binary -j .text $@.out $@
 
-entry.o:entry.S
+entry.o: boot/boot.S
 	gcc -nostdinc $(CFLAGS) -c -o $@ $<
-main.o:main.c 
+main.o: init/main.c 
 	@#对应《30天》中的bootpack.c
 	gcc -nostdinc $(CFLAGS) -Os -c -o $@ $<
-screen.o:screen.c
+screen.o: dev/chr_dev/screen.c
 	gcc -nostdinc $(CFLAGS) -Os -c -o $@ $<
 
-nasmfun.o:nasmfun.S
-	gcc -nostdinc $(CFLAGS) -c -o $@ $<
 
 clean:
 	@rm -f *.o  *.d *.out  bootloader  funos.img
@@ -30,7 +28,7 @@ clean:
 	@rm -f kernelImg.asm
 
 all:kernelImg
-	nasm -o bootloader boot.S
+	nasm -o bootloader boot/boot.S
 
 img:all
 	dd if=bootloader of=funos.img bs=512 count=1
