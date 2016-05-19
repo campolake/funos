@@ -8,7 +8,7 @@ CFLAGS +=  -Wno-format -Wno-unused -Werror -gstabs -m32
 
 LDFLAGS=-m elf_i386
 
-kernel:entry.o  main.o screen.o
+kernelImg:entry.o  main.o screen.o
 	ld $(LDFLAGS) -N -e start -Ttext $(addr) -o $@.out $^
 	objdump -S $@.out >$@.asm
 	objcopy -S -O binary -j .text $@.out $@
@@ -25,23 +25,25 @@ nasmfun.o:nasmfun.S
 	gcc -nostdinc $(CFLAGS) -c -o $@ $<
 
 clean:
-	@rm -f *.o  *.d *.out  bootloader  myos.img
+	@rm -f *.o  *.d *.out  bootloader  funos.img
+	@rm -f kernelImg
+	@rm -f kernelImg.asm
 
-all:kernel
-	nasm -o bootloader ipl10.nas
+all:kernelImg
+	nasm -o bootloader boot.S
 
 img:all
-	dd if=bootloader of=myos.img bs=512 count=1
-	dd if=/dev/zero of=myos.img bs=512 seek=1 skip=1 count=2879
+	dd if=bootloader of=funos.img bs=512 count=1
+	dd if=/dev/zero of=funos.img bs=512 seek=1 skip=1 count=2879
 
 copy:img
 	mkdir -p /tmp/floppy
-	mount -o loop myos.img /tmp/floppy -o fat=12
+	mount -o loop funos.img /tmp/floppy -o fat=12
 	sleep 1
-	cp kernel /tmp/floppy
+	cp kernelImg /tmp/floppy
 	sleep 1
 	umount /tmp/floppy
 run:
-	qemu-system-i386 -drive file=myos.img,if=floppy
+	qemu-system-i386 -drive file=funos.img,if=floppy
 
 

@@ -1,7 +1,7 @@
 #include "header.h"
 
 
-void HariMain(void)
+void OsMain(void)
 {
 
 	color_screen(15);
@@ -16,7 +16,7 @@ void HariMain(void)
 	ysize = 200;
 
 	/* 根据 0xa0000 + x + y * 320 计算坐标 8*/
-	boxfill8(vram, xsize, COL8_008484,  0,         0,          xsize -  1, ysize - 29);
+	boxfill8(vram, xsize, COL8_848484,  0,         0,          xsize -  1, ysize - 29);
 	boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 28, xsize -  1, ysize - 28);
 	boxfill8(vram, xsize, COL8_FFFFFF,  0,         ysize - 27, xsize -  1, ysize - 27);
 	boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 26, xsize -  1, ysize -  1);

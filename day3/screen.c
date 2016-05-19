@@ -11,13 +11,14 @@ void clear_screen(char color) //15:pure white
 	}
 }
 
+//用单一颜色设置屏幕
 void color_screen(char color) //15:pure white
 {
 	int i;
 	color=color;
 	for(i=0xa0000;i<0xaffff;i++)
 	{
-		write_mem8(i,i&0x0f);  //if we write 15 ,all pixels color will be white,15 mens pure white ,so the screen changes into white
+		write_mem8(i,color);  //if we write 15 ,all pixels color will be white,15 mens pure white ,so the screen changes into white
 
 	}
 }
@@ -28,9 +29,9 @@ void set_palette(int start, int end, unsigned char* rgb){
 	io_cli();
 	outb(0x03c8, start);	//替代作者的io_out8()
 	for(i=start; i<=end; i++){
-		outb(0x03c9,rgb[0]/4);
-		outb(0x03c9,rgb[1]/4);
-		outb(0x03c9,rgb[2]/4);
+		// outb(0x03c9,rgb[0]/4);
+		// outb(0x03c9,rgb[1]/4);
+		// outb(0x03c9,rgb[2]/4);
 		rgb+=3;
 	}
 	write_eflags(eflags);	//替代作者的io_store_eflags(eflags)

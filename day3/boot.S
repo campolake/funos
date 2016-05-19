@@ -1,6 +1,3 @@
-; haribote-ipl
-; TAB=4
-
 CYLS	EQU		10				; 声明CYLS=10
 
 		ORG		0x7c00			; 指明程序装载地址

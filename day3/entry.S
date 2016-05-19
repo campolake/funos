@@ -31,13 +31,23 @@ start:
   
   movb $0x13,%al  # ;vga 320x200x8 位,color mode 
   movb $0x00,%ah
-  int $0x10
-  
-#save color mode in ram 0x0ff0
+  int $0x10 
+
+
+ 
  movb $8,(VMODE)
  movw $320,(SCRNX)
  movw $200,(SCRNY)
  movl $0x000a0000,(VRAM)
+
+  
+  # movw $0x4101,%ax  # ;vga 640*480 8 位,color mode 
+  # movw $0x4f02,%bx
+  # int $0x10
+  # movb $8,(VMODE)
+  # movw $640,(SCRNX)
+  # movw $480,(SCRNY)
+  # movl $0xe0000000,(VRAM)
 
  #get keyboard led status
  movb	$0x02,%ah 
@@ -122,7 +132,7 @@ protcseg:
   
   # Set up the stack pointer and call into C.
   movl    $start, %esp
-  call HariMain //这里调用C
+  call OsMain //这里调用C
 
   # If bootmain returns (it shouldn't), loop.
 spin:
