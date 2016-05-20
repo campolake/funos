@@ -13,13 +13,13 @@ kernelImg:entry.o  main.o screen.o
 	objdump -S $@.out >$@.asm
 	objcopy -S -O binary -j .text $@.out $@
 
-entry.o: boot/boot.S
+entry.o: boot/entry.S
 	gcc -nostdinc $(CFLAGS) -c -o $@ $<
 main.o: init/main.c 
 	@#对应《30天》中的bootpack.c
 	gcc -nostdinc $(CFLAGS) -Os -c -o $@ $<
 screen.o: dev/chr_dev/screen.c
-	gcc -nostdinc $(CFLAGS) -Os -c -o $@ $<
+	gcc -nostdinc $(CFLAGS)  -fno-stack-protector  -Os -c -o $@ $<
 
 
 clean:
@@ -42,6 +42,6 @@ copy:img
 	sleep 1
 	umount /tmp/floppy
 run:
-	qemu-system-i386 -drive file=funos.img,if=floppy
+	qemu-system-i386 -drive file=funos.img,if=floppy -s -S
 
 

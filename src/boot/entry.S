@@ -35,6 +35,8 @@ start:
 
 
  
+#save color mode in ram 0x0ff0
+ movb  $10,(CYLS)
  movb $8,(VMODE)
  movw $320,(SCRNX)
  movw $200,(SCRNY)
@@ -132,7 +134,7 @@ protcseg:
   
   # Set up the stack pointer and call into C.
   movl    $start, %esp
-  call OsMain //这里调用C
+  call wmain //这里调用C
 
   # If bootmain returns (it shouldn't), loop.
 spin:
